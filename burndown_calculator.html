@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Burndown Calculator</title>
+	<style type="text/css">
+		#result {
+			font-weight: bold;
+			font-size: 400%;
+		}
+		#expr {
+			font-size: 150%;
+		}
+		button {
+			font-size: 600%;
+			margin: 8px;
+		}
+	</style>
+</head>
+<body onload="init();">
+	<script type="text/javascript">
+		function Calculator(outSum, outExpr) {
+			this.sum = 0;
+			this.expr = [];
+			this.outSum = outSum;
+			this.outExpr = outExpr;
+
+			this.add = function(num) {
+				this.sum += num;
+				this.expr.push(num);
+				this.updateOut();
+			}
+
+			this.reset = function() {
+				this.sum = 0;
+				this.expr = [];
+				this.updateOut();
+			}
+
+			this.undo = function() {
+				if (this.expr.length > 0) {
+					this.sum -= this.expr[this.expr.length - 1];
+					this.expr.pop();
+					this.updateOut();
+				}
+			}
+
+			this.updateOut = function() {
+				this.outSum.innerHTML = this.sum.toString();
+				if (this.expr.length) {
+					this.outExpr.innerHTML = this.expr.join("+");
+				} else{
+					this.outExpr.innerHTML = "0";
+				}
+			}
+
+			this.updateOut();
+		}
+
+		function init () {
+			c = new Calculator(document.getElementById("result"), document.getElementById("expr"));
+		}
+	</script>
+	<div id="result">0</div>
+	<div id="expr">0</div>
+	<hr/><br/>
+	<button onmousedown="c.add(1);">1</button>
+	<button onmousedown="c.add(2);">2</button>
+	<button onmousedown="c.add(3);">3</button>
+	<button onmousedown="c.add(5);">5</button>
+	<button onmousedown="c.add(8);">8</button>
+	<br/>
+	<button onmousedown="c.add(13);">J</button>
+	<button onmousedown="c.add(21);">Q</button>
+	<button onmousedown="c.add(34);">K</button>
+	<hr/><br/>
+	<button onclick="c.undo();">Undo</button>
+	<button onclick="c.reset();">Reset</button>
+</body>
+</html>
